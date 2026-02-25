@@ -1,0 +1,19 @@
+# ROS 2 Bild & Install Folders
+build/
+install/
+log/
+
+# Python Cache and Compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Large Binary Files
+*.pth
+*.npy
+*.tfevents.*
+
+# System files
+.DS_Store
+.thumbs.db

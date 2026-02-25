@@ -1,1 +1,0 @@
-/home/shesha/robot_ws/src/td3/scripts/train_velodyne_node.py

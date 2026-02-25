@@ -1,1 +1,0 @@
-/home/shesha/robot_ws/src/td3/launch/install/local_setup.ps1

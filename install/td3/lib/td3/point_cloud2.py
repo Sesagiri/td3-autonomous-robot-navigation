@@ -1,1 +1,0 @@
-/home/shesha/robot_ws/src/td3/scripts/point_cloud2.py
