@@ -1,0 +1,362 @@
+[0.010s] Invoking command in '/home/shesha/robot_ws/build/td3': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/shesha/robot_ws/src/td3 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/shesha/robot_ws/install/td3
+[0.113s] -- The C compiler identification is GNU 11.4.0
+[0.195s] -- The CXX compiler identification is GNU 11.4.0
+[0.205s] -- Detecting C compiler ABI info
+[0.278s] -- Detecting C compiler ABI info - done
+[0.284s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.285s] -- Detecting C compile features
+[0.285s] -- Detecting C compile features - done
+[0.288s] -- Detecting CXX compiler ABI info
+[0.369s] -- Detecting CXX compiler ABI info - done
+[0.375s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.375s] -- Detecting CXX compile features
+[0.376s] -- Detecting CXX compile features - done
+[0.379s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.514s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.574s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.612s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.690s] -- Added test 'copyright' to check source files copyright and LICENSE
+[0.722s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.726s] -- Added test 'lint_cmake' to check CMake code style
+[0.728s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.742s] -- Added test 'xmllint' to check XML markup files
+[0.745s] -- Configuring done
+[0.747s] -- Generating done
+[0.748s] -- Build files have been written to: /home/shesha/robot_ws/build/td3
+[0.753s] Invoked command in '/home/shesha/robot_ws/build/td3' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/shesha/robot_ws/src/td3 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/shesha/robot_ws/install/td3
+[0.755s] Invoking command in '/home/shesha/robot_ws/build/td3': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/shesha/robot_ws/build/td3 -- -j16 -l16
+[0.793s] Invoked command in '/home/shesha/robot_ws/build/td3' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/shesha/robot_ws/build/td3 -- -j16 -l16
+[0.804s] Invoking command in '/home/shesha/robot_ws/build/td3': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/shesha/robot_ws/build/td3
+[0.810s] -- Install configuration: ""
+[0.810s] -- Execute custom install script
+[0.811s] [33mCMake Warning (dev) at ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:62 (file):
+[0.811s]   Policy CMP0009 is not set: FILE GLOB_RECURSE calls should not follow
+[0.811s]   symlinks by default.  Run "cmake --help-policy CMP0009" for policy details.
+[0.811s]   Use the cmake_policy command to set the policy and suppress this warning.
+[0.811s] Call Stack (most recent call first):
+[0.811s]   ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:314 (ament_cmake_symlink_install_directory)
+[0.811s]   cmake_install.cmake:46 (include)
+[0.811s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[0.811s] [0m
+[0.811s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/build/.built_by
+[0.820s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/build/COLCON_IGNORE
+[0.830s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/.colcon_install_layout
+[0.839s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/COLCON_IGNORE
+[0.849s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/_local_setup_util_ps1.py
+[0.858s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/_local_setup_util_sh.py
+[0.867s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/local_setup.bash
+[0.876s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/local_setup.ps1
+[0.885s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/local_setup.sh
+[0.894s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/local_setup.zsh
+[0.903s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/setup.bash
+[0.912s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/setup.ps1
+[0.922s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/setup.sh
+[0.931s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/install/setup.zsh
+[0.940s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/log/COLCON_IGNORE
+[0.950s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/log/build_2026-02-25_12-15-57/events.log
+[0.959s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/log/build_2026-02-25_12-15-57/logger_all.log
+[0.968s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/log/latest/events.log
+[0.977s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/log/latest/logger_all.log
+[0.987s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/log/latest_build/events.log
+[0.995s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/log/latest_build/logger_all.log
+[1.005s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/multi_robot_scenario.launch.py
+[1.013s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/pioneer3dx.rviz
+[1.023s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/robot_state_publisher.launch.py
+[1.033s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/test_simulation.launch.py
+[1.043s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//launch/training_simulation.launch.py
+[1.054s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/laser/hokuyo.dae
+[1.063s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/Coordinates
+[1.072s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/back_rim.stl
+[1.081s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/back_sonar.stl
+[1.090s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/center_hubcap.stl
+[1.099s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/center_wheel.stl
+[1.108s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/chassis.stl
+[1.117s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/front_rim.stl
+[1.127s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/front_sonar.stl
+[1.136s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/left_hubcap.stl
+[1.145s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/left_wheel.stl
+[1.163s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/right_hubcap.stl
+[1.172s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/right_wheel.stl
+[1.181s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/swivel.stl
+[1.191s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/meshes/p3dx/top.stl
+[1.200s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/model.config
+[1.210s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/td_robot.sdf
+[1.219s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/CHANGELOG.rst
+[1.229s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/CMakeLists.txt
+[1.239s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/launch/example-launch.py
+[1.248s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/HDL32E_base.dae
+[1.257s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/HDL32E_base.stl
+[1.266s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/HDL32E_scan.dae
+[1.276s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/HDL32E_scan.stl
+[1.286s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/VLP16_base_1.dae
+[1.295s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/VLP16_base_1.stl
+[1.305s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/VLP16_base_2.dae
+[1.314s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/VLP16_base_2.stl
+[1.324s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/VLP16_scan.dae
+[1.333s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/meshes/VLP16_scan.stl
+[1.343s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/base/base_link.dae
+[1.352s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/base/base_linkOLD.dae
+[1.362s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/lidar_base/YDlidar_base.dae
+[1.372s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/lidar_head/YDlidar_head.dae
+[1.382s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/camera/camera.dae
+[1.391s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/front_lrf/front_lrf.dae
+[1.402s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/front_lrf/lrf_texture.png
+[1.412s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gim30/gim30.dae
+[1.421s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gim30/gim30_lrf_texture.png
+[1.431s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gps/gps.dae
+[1.440s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gps/gps_texture.png
+[1.450s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/rear_lrf/rear_lrf.dae
+[1.459s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/rear_lrf/urg_texture.png
+[1.469s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/front_left_link.dae
+[1.478s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/front_right_link.dae
+[1.488s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/rear_left_link.dae
+[1.497s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/rear_right_link.dae
+[1.506s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/wheel/wheel_link.dae
+[1.516s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/base/base_link.stl
+[1.525s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/base/base_link_old.stl
+[1.535s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/lidar_base/YDlidar_base.stl
+[1.544s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/lidar_head/YDlidar_head v4.stl
+[1.554s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/front_lrf/front_lrf.stl
+[1.564s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/gim30/gim30.stl
+[1.573s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/gps/gps.stl
+[1.583s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/rear_lrf/rear_lrf.stl
+[1.593s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/FRONT_LEFT_LINKSTL.stl
+[1.602s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/FRONT_RIGHT_LINKSTL.stl
+[1.611s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/REAR_LEFT_LINKSTL.stl
+[1.621s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/REAR_RIGHT_LINKSTL.stl
+[1.630s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/sus_link.stl
+[1.639s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/meshes/STL/wheel/robot_wheel.stl
+[1.648s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/model.config
+[1.658s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/models/rs_robot/rs_robot.sdf
+[1.668s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/package.xml
+[1.677s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/rviz/example.rviz
+[1.687s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/urdf/HDL-32E.urdf.xacro
+[1.696s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/urdf/VLP-16.urdf.xacro
+[1.706s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/urdf/VLP-32C.urdf.xacro
+[1.715s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/urdf/example.urdf.xacro
+[1.725s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/world/example.world
+[1.734s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//models/td_robot/velodyne_description/world/lio_sam.model
+[1.746s] [33mCMake Warning (dev) at ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:62 (file):
+[1.746s]   Policy CMP0009 is not set: FILE GLOB_RECURSE calls should not follow
+[1.746s]   symlinks by default.  Run "cmake --help-policy CMP0009" for policy details.
+[1.746s]   Use the cmake_policy command to set the policy and suppress this warning.
+[1.746s] Call Stack (most recent call first):
+[1.746s]   ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:314 (ament_cmake_symlink_install_directory)
+[1.746s]   cmake_install.cmake:46 (include)
+[1.746s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[1.746s] [0m
+[1.747s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/__pycache__/point_cloud2.cpython-310.pyc
+[1.756s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/__pycache__/replay_buffer.cpython-310.pyc
+[1.766s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/build/.built_by
+[1.776s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/build/COLCON_IGNORE
+[1.785s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/.colcon_install_layout
+[1.794s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/COLCON_IGNORE
+[1.803s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/_local_setup_util_ps1.py
+[1.812s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/_local_setup_util_sh.py
+[1.821s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/local_setup.bash
+[1.830s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/local_setup.ps1
+[1.840s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/local_setup.sh
+[1.849s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/local_setup.zsh
+[1.858s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/setup.bash
+[1.867s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/setup.ps1
+[1.876s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/setup.sh
+[1.885s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/install/setup.zsh
+[1.894s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/log/COLCON_IGNORE
+[1.903s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/log/build_2026-02-17_14-30-30/events.log
+[1.912s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/log/build_2026-02-17_14-30-30/logger_all.log
+[1.922s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/log/latest/events.log
+[1.931s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/log/latest/logger_all.log
+[1.940s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/log/latest_build/events.log
+[1.949s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/log/latest_build/logger_all.log
+[1.958s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/point_cloud2.py
+[1.967s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/pytorch_models/td3_green_4wheel_actor.pth
+[1.976s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/pytorch_models/td3_green_4wheel_critic.pth
+[1.985s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/pytorch_models/td3_velodyne_actor.pth
+[1.995s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/pytorch_models/td3_velodyne_critic.pth
+[2.004s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/replay_buffer.py
+[2.012s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/results/TD3_velodyne.npy
+[2.022s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/results/td3_green_4wheel.npy
+[2.031s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1680403580.robotmania-MINIPC-PA90.28181.0
+[2.040s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1680403642.robotmania-MINIPC-PA90.28717.0
+[2.049s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771408188.sesa-ubntu.26255.0
+[2.058s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771408725.sesa-ubntu.27135.0
+[2.067s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771409591.sesa-ubntu.28175.0
+[2.076s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771409643.sesa-ubntu.28530.0
+[2.085s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771476254.sesa-ubntu.55762.0
+[2.094s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771476388.sesa-ubntu.56511.0
+[2.104s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771476510.sesa-ubntu.57219.0
+[2.113s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771476820.sesa-ubntu.58660.0
+[2.122s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771483353.sesa-ubntu.61484.0
+[2.131s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771483372.sesa-ubntu.61647.0
+[2.140s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771483445.sesa-ubntu.62060.0
+[2.150s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771490232.sesa-ubntu.65214.0
+[2.160s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771561497.sesa-ubntu.76951.0
+[2.169s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771561572.sesa-ubntu.77444.0
+[2.179s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771561651.sesa-ubntu.77943.0
+[2.189s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771561797.sesa-ubntu.78651.0
+[2.198s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/runs/events.out.tfevents.1771561942.sesa-ubntu.79372.0
+[2.208s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/test_4wheel_node.py
+[2.217s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/test_velodyne_node.py
+[2.227s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/train_4wheel_node.py
+[2.236s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//scripts/train_velodyne_node.py
+[2.247s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/laser/hokuyo.dae
+[2.257s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/Coordinates
+[2.266s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/back_rim.stl
+[2.276s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/back_sonar.stl
+[2.285s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/center_hubcap.stl
+[2.295s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/center_wheel.stl
+[2.304s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/chassis.stl
+[2.313s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/front_rim.stl
+[2.322s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/front_sonar.stl
+[2.331s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/left_hubcap.stl
+[2.341s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/left_wheel.stl
+[2.350s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/right_hubcap.stl
+[2.359s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/right_wheel.stl
+[2.368s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/swivel.stl
+[2.378s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/meshes/p3dx/top.stl
+[2.387s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//urdf/td_robot.urdf
+[2.398s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3//worlds/td3.world
+[2.407s] -- Symlinking: /home/shesha/robot_ws/install/td3/lib/td3/replay_buffer.py
+[2.417s] -- Symlinking: /home/shesha/robot_ws/install/td3/lib/td3/test_4wheel_node.py
+[2.425s] -- Symlinking: /home/shesha/robot_ws/install/td3/lib/td3/train_4wheel_node.py
+[2.434s] -- Symlinking: /home/shesha/robot_ws/install/td3/lib/td3/point_cloud2.py
+[2.444s] [33mCMake Warning (dev) at ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:62 (file):
+[2.444s]   Policy CMP0009 is not set: FILE GLOB_RECURSE calls should not follow
+[2.444s]   symlinks by default.  Run "cmake --help-policy CMP0009" for policy details.
+[2.444s]   Use the cmake_policy command to set the policy and suppress this warning.
+[2.444s] Call Stack (most recent call first):
+[2.444s]   ament_cmake_symlink_install/ament_cmake_symlink_install.cmake:320 (ament_cmake_symlink_install_directory)
+[2.445s]   cmake_install.cmake:46 (include)
+[2.445s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[2.445s] [0m
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/build/.built_by
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/build/COLCON_IGNORE
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/.colcon_install_layout
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/COLCON_IGNORE
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/_local_setup_util_ps1.py
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/_local_setup_util_sh.py
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/local_setup.bash
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/local_setup.ps1
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/local_setup.sh
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/local_setup.zsh
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/setup.bash
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/setup.ps1
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/setup.sh
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/install/setup.zsh
+[2.445s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/log/COLCON_IGNORE
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/log/build_2026-02-25_12-15-57/events.log
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/log/build_2026-02-25_12-15-57/logger_all.log
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/log/latest/events.log
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/log/latest/logger_all.log
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/log/latest_build/events.log
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/log/latest_build/logger_all.log
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/multi_robot_scenario.launch.py
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/pioneer3dx.rviz
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/robot_state_publisher.launch.py
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/test_simulation.launch.py
+[2.446s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/launch/training_simulation.launch.py
+[2.447s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/laser/hokuyo.dae
+[2.447s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/Coordinates
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/back_rim.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/back_sonar.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/center_hubcap.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/center_wheel.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/chassis.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/front_rim.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/front_sonar.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/left_hubcap.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/left_wheel.stl
+[2.448s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/right_hubcap.stl
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/right_wheel.stl
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/swivel.stl
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/meshes/p3dx/top.stl
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/model.config
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/td_robot.sdf
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/CHANGELOG.rst
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/CMakeLists.txt
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/launch/example-launch.py
+[2.449s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/HDL32E_base.dae
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/HDL32E_base.stl
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/HDL32E_scan.dae
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/HDL32E_scan.stl
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/VLP16_base_1.dae
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/VLP16_base_1.stl
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/VLP16_base_2.dae
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/VLP16_base_2.stl
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/VLP16_scan.dae
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/meshes/VLP16_scan.stl
+[2.450s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/base/base_link.dae
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/base/base_linkOLD.dae
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/lidar_base/YDlidar_base.dae
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/lidar_head/YDlidar_head.dae
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/camera/camera.dae
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/front_lrf/front_lrf.dae
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/front_lrf/lrf_texture.png
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gim30/gim30.dae
+[2.451s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gim30/gim30_lrf_texture.png
+[2.452s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gps/gps.dae
+[2.452s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/gps/gps_texture.png
+[2.452s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/rear_lrf/rear_lrf.dae
+[2.452s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/sensors/rear_lrf/urg_texture.png
+[2.452s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/front_left_link.dae
+[2.452s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/front_right_link.dae
+[2.452s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/rear_left_link.dae
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/suspension/rear_right_link.dae
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/DAE/wheel/wheel_link.dae
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/base/base_link.stl
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/base/base_link_old.stl
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/lidar_base/YDlidar_base.stl
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/lidar_head/YDlidar_head v4.stl
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/front_lrf/front_lrf.stl
+[2.453s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/gim30/gim30.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/gps/gps.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/sensors/rear_lrf/rear_lrf.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/FRONT_LEFT_LINKSTL.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/FRONT_RIGHT_LINKSTL.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/REAR_LEFT_LINKSTL.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/REAR_RIGHT_LINKSTL.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/suspension/sus_link.stl
+[2.454s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/meshes/STL/wheel/robot_wheel.stl
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/model.config
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/models/rs_robot/rs_robot.sdf
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/package.xml
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/rviz/example.rviz
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/urdf/HDL-32E.urdf.xacro
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/urdf/VLP-16.urdf.xacro
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/urdf/VLP-32C.urdf.xacro
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/urdf/example.urdf.xacro
+[2.455s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/world/example.world
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/models/td_robot/velodyne_description/world/lio_sam.model
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/laser/hokuyo.dae
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/Coordinates
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/back_rim.stl
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/back_sonar.stl
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/center_hubcap.stl
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/center_wheel.stl
+[2.456s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/chassis.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/front_rim.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/front_sonar.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/left_hubcap.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/left_wheel.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/right_hubcap.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/right_wheel.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/swivel.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/meshes/p3dx/top.stl
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/urdf/td_robot.urdf
+[2.457s] -- Up-to-date symlink: /home/shesha/robot_ws/install/td3/share/td3/worlds/td3.world
+[2.458s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/ament_index/resource_index/package_run_dependencies/td3
+[2.468s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/ament_index/resource_index/parent_prefix_path/td3
+[2.477s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/environment/ament_prefix_path.sh
+[2.486s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/environment/ament_prefix_path.dsv
+[2.495s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/environment/path.sh
+[2.503s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/environment/path.dsv
+[2.513s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/local_setup.bash
+[2.522s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/local_setup.sh
+[2.531s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/local_setup.zsh
+[2.540s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/local_setup.dsv
+[2.549s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/package.dsv
+[2.558s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/ament_index/resource_index/packages/td3
+[2.567s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/cmake/td3Config.cmake
+[2.577s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/cmake/td3Config-version.cmake
+[2.587s] -- Symlinking: /home/shesha/robot_ws/install/td3/share/td3/package.xml
+[2.599s] Invoked command in '/home/shesha/robot_ws/build/td3' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/shesha/robot_ws/build/td3
