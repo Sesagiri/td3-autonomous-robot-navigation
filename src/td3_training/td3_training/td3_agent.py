@@ -10,6 +10,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class TD3:
     def __init__(self, state_dim=STATE_DIM, action_dim=ACTION_DIM,
                  max_action=MAX_ACTION, discount=0.99, tau=0.005,
+                 policy_noise=0.2, noise_clip=0.5, policy_freq=2, lr=3e-4):
                  policy_noise=0.2, noise_clip=0.5, policy_freq=2, lr=3e-4,
                  log_dir="./runs"):
 
@@ -53,6 +54,10 @@ class TD3:
                 -self.noise_clip, self.noise_clip)
             next_action = (self.actor_target(next_state) + noise).clamp(
                 -self.max_action, self.max_action)
+            tQ1, tQ2 = self.critic_target(next_state, next_action)
+            target_Q  = reward + (1 - done) * self.discount * torch.min(tQ1, tQ2)
+
+        cQ1, cQ2   = self.critic(state, action)
             tQ1, tQ2   = self.critic_target(next_state, next_action)
             target_Q   = reward + (1 - done) * self.discount * torch.min(tQ1, tQ2)
 

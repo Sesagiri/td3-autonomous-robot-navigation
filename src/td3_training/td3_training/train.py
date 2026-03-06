@@ -24,6 +24,12 @@ from td3_agent import TD3
 from actor_critic import ReplayBuffer, STATE_DIM, ACTION_DIM
 
 # ── Hyperparameters ───────────────────────────────────────────────────
+MAX_EPISODES      = 600      # increase if needed
+BATCH_SIZE        = 256
+REPLAY_START      = 1000     # random exploration before training starts
+EXPLORATION_NOISE = 0.15     # noise added to actions during training
+SAVE_EVERY        = 10       # save checkpoint every N episodes
+RESUME_TRAINING   = False    # set True to continue from checkpoint
 MAX_EPISODES      = 1500     # enough for obstacle avoidance to develop
 BATCH_SIZE        = 256
 REPLAY_START      = 500      # reduced: start learning after 500 steps not 1000
@@ -48,6 +54,9 @@ def main():
         agent.load(MODEL_PATH)
         print("▶  Resumed from existing checkpoint")
 
+    # Log header
+    with open(LOG_FILE, "w") as f:
+        f.write("episode,steps,reward,result,goal_x,goal_y\n")
     # Log header — only write if starting fresh
     if not RESUME_TRAINING or not os.path.exists(LOG_FILE):
         with open(LOG_FILE, "w") as f:
