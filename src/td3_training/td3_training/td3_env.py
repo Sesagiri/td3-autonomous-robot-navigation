@@ -39,10 +39,12 @@ GOAL_MIN_DIST    = 0.40
 GOAL_MARKER_NAME = "goal_marker"
 
 # ── Obstacles (x, y, clearance_radius) ────────────────────────────────
+# Plate obstacles — longer but thinner than boxes
+# clearance = half plate length (0.20m) + robot half-width (0.07m) + margin
 OBSTACLES = [
-    ( 0.5,  0.5, 0.25),
-    (-0.6,  0.4, 0.25),
-    ( 0.4, -0.6, 0.25),
+    ( 0.45,  0.45, 0.25),   # plate 1: top-right,   rotated 45°, 0.40m long
+    (-0.55,  0.40, 0.22),   # plate 2: top-left,    straight,    0.35m long
+    ( 0.15, -0.55, 0.20),   # plate 3: bottom-centre, rotated 45°, 0.30m long
 ]
 
 # ── LiDAR ─────────────────────────────────────────────────────────────
@@ -73,26 +75,45 @@ R_PROGRESS  =   30.0
 
 _goal_quadrant_idx = 0   # global counter for strict rotation
 
+# Goals placed directly BEHIND each plate obstacle from robot start (0,0)
+# Forces robot to navigate around the plate to reach the goal
+FORCED_OBSTACLE_GOALS = [
+    ( 0.65,  0.65),   # behind plate_1 at (0.45, 0.45)
+    (-0.65,  0.60),   # behind plate_2 at (-0.55, 0.40)
+    ( 0.30, -0.68),   # behind plate_3 at (0.15, -0.55)
+]
+_forced_goal_idx = 0   # cycles through forced goals
+
+
 def _safe_goal():
     """
-    Pick a random goal spread evenly across all 4 quadrants.
-    Uses strict rotation so each quadrant gets equal training.
+    Mix of:
+    - 50% forced obstacle-avoidance goals (robot MUST go around obstacle)
+    - 50% random quadrant goals (generalization)
     """
-    global _goal_quadrant_idx
+    global _goal_quadrant_idx, _forced_goal_idx
 
-    # Quadrant definitions: (xmin, xmax, ymin, ymax)
+    # Every other episode use a forced obstacle goal
+    if _goal_quadrant_idx % 2 == 0:
+        goal = FORCED_OBSTACLE_GOALS[_forced_goal_idx % len(FORCED_OBSTACLE_GOALS)]
+        _forced_goal_idx     += 1
+        _goal_quadrant_idx   += 1
+        return goal
+
+    # Odd episodes: random quadrant goal
     quadrants = [
-        ( 0.10,  ARENA_MAX,  0.10,  ARENA_MAX),  # Q1: top-right    (+x, +y)
-        ( 0.10,  ARENA_MAX,  ARENA_MIN, -0.10),  # Q4: bottom-right (+x, -y)
-        ( ARENA_MIN, -0.10,  0.10,  ARENA_MAX),  # Q2: top-left     (-x, +y)
-        ( ARENA_MIN, -0.10,  ARENA_MIN, -0.10),  # Q3: bottom-left  (-x, -y)
+        ( 0.10,  ARENA_MAX,  0.10,  ARENA_MAX),  # Q1: top-right
+        ( 0.10,  ARENA_MAX,  ARENA_MIN, -0.10),  # Q4: bottom-right
+        ( ARENA_MIN, -0.10,  0.10,  ARENA_MAX),  # Q2: top-left
+        ( ARENA_MIN, -0.10,  ARENA_MIN, -0.10),  # Q3: bottom-left
     ]
 
-    for attempt in range(1000):
-        # Strict rotation through quadrants
-        q     = _goal_quadrant_idx % 4
-        xmin, xmax, ymin, ymax = quadrants[q]
+    q = _goal_quadrant_idx % 4
+    _goal_quadrant_idx += 1
 
+    xmin, xmax, ymin, ymax = quadrants[q]
+
+    for _ in range(500):
         x = random.uniform(xmin, xmax)
         y = random.uniform(ymin, ymax)
 
@@ -103,15 +124,11 @@ def _safe_goal():
             math.hypot(x - ox, y - oy) < margin + GOAL_TOLERANCE + 0.05
             for ox, oy, margin in OBSTACLES
         )
-        if too_close:
-            # Try next quadrant if this one is blocked
-            _goal_quadrant_idx += 1
-            continue
+        if not too_close:
+            return x, y
 
-        _goal_quadrant_idx += 1
-        return x, y
-
-    return 0.65, 0.0   # safe fallback
+    fallbacks = [(0.55, 0.20), (0.55, -0.20), (-0.55, 0.20), (-0.55, -0.20)]
+    return fallbacks[q]
 
 
 class TD3Env(Node):

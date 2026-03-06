@@ -6,75 +6,73 @@
     <include><uri>model://sun</uri></include>
     <scene><shadows>false</shadows></scene>
 
-    <!-- Physics: fast for RL training -->
     <physics type="ode">
       <real_time_update_rate>500.0</real_time_update_rate>
       <max_step_size>0.002</max_step_size>
       <real_time_factor>1</real_time_factor>
     </physics>
 
-    <!-- 2m x 2m Arena walls (±1.0 m) -->
+    <!-- 2m x 2m Arena walls — white like real arena -->
     <model name="arena_walls">
       <static>true</static>
       <link name="north_wall">
-        <pose>0 1 1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
+        <pose>0 1 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
       <link name="south_wall">
-        <pose>0 -1 1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
+        <pose>0 -1 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
       <link name="east_wall">
-        <pose>1 0 1 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
+        <pose>1 0 0.15 0 0 1.5708</pose>
+        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
       <link name="west_wall">
-        <pose>-1 0 1 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
+        <pose>-1 0 0.15 0 0 1.5708</pose>
+        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
     </model>
 
-    <!-- Obstacle 1 — top-right quadrant -->
+    <!-- Obstacle 1: Long flat plate, top-right, rotated 45deg (wood colour) -->
     <model name="obstacle_1">
       <static>true</static>
       <link name="link">
-        <pose>0.5 0.5 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <pose>0.45 0.45 0.10 0 0 0.785</pose>
+        <collision name="c"><geometry><box><size>0.40 0.06 0.25</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.40 0.06 0.25</size></box></geometry>
+          <material><ambient>0.65 0.45 0.25 1</ambient><diffuse>0.65 0.45 0.25 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- Obstacle 2 — top-left quadrant -->
+    <!-- Obstacle 2: Flat white plate, top-left, straight orientation -->
     <model name="obstacle_2">
       <static>true</static>
       <link name="link">
-        <pose>-0.6 0.4 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.1 0.1 0.8 1</ambient></material></visual>
+        <pose>-0.55 0.40 0.10 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.35 0.06 0.25</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.35 0.06 0.25</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- Obstacle 3 — bottom-right quadrant -->
+    <!-- Obstacle 3: Angled white plate, bottom-centre, rotated 45deg -->
     <model name="obstacle_3">
       <static>true</static>
       <link name="link">
-        <pose>0.4 -0.6 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.8 0.8 0.1 1</ambient></material></visual>
+        <pose>0.15 -0.55 0.10 0 0 0.785</pose>
+        <collision name="c"><geometry><box><size>0.30 0.05 0.25</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.30 0.05 0.25</size></box></geometry>
+          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse></material></visual>
       </link>
     </model>
-
 
   </world>
 </sdf>

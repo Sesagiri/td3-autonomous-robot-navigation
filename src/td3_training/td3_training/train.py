@@ -29,7 +29,7 @@ BATCH_SIZE        = 256
 REPLAY_START      = 500      # reduced: start learning after 500 steps not 1000
 EXPLORATION_NOISE = 0.15     # noise added to actions during training
 SAVE_EVERY        = 10       # save checkpoint every N episodes
-RESUME_TRAINING   = False    # fresh start — old data had backward driving
+RESUME_TRAINING   = True     # continue from saved checkpoint
 MODEL_PATH        = "./models"
 LOG_FILE          = "./logs/training_log.csv"
 
@@ -48,9 +48,10 @@ def main():
         agent.load(MODEL_PATH)
         print("▶  Resumed from existing checkpoint")
 
-    # Log header
-    with open(LOG_FILE, "w") as f:
-        f.write("episode,steps,reward,result,goal_x,goal_y\n")
+    # Log header — only write if starting fresh
+    if not RESUME_TRAINING or not os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "w") as f:
+            f.write("episode,steps,reward,result,goal_x,goal_y\n")
 
     best_reward  = -float("inf")
     total_steps  = 0
