@@ -116,6 +116,9 @@ def main():
         with open(LOG_FILE, "a") as f:
             f.write(f"{ep},{ep_steps},{ep_reward:.2f},{result},{gx:.3f},{gy:.3f}\n")
 
+        # Log to TensorBoard
+        agent.log_episode(ep, ep_reward, ep_steps, result, success_rate)
+
         # ── Save ───────────────────────────────────────────────────────
         if ep % SAVE_EVERY == 0:
             agent.save(MODEL_PATH)
@@ -127,6 +130,7 @@ def main():
 
     # Final save
     agent.save(MODEL_PATH)
+    agent.close()
     print(f"\n✅ Training done! Copy models/best/TD3_actor.pth to your Pi 5.")
     env._pub_cmd(0.0, 0.0)
     env.destroy_node()

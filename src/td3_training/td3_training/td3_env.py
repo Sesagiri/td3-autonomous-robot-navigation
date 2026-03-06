@@ -21,8 +21,7 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from std_srvs.srv import Empty
-from gazebo_msgs.srv import SetEntityState
-from gazebo_msgs.msg import EntityState
+from gazebo_msgs.srv import SpawnEntity, DeleteEntity
 from geometry_msgs.msg import Pose
 from std_msgs.msg import String
 from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
@@ -72,41 +71,44 @@ R_STEP      =   -0.5
 R_PROGRESS  =   30.0
 
 
+_goal_quadrant_idx = 0   # global counter for strict rotation
+
 def _safe_goal():
     """
-    Pick a random goal that is:
-    - Inside arena bounds (ARENA_MIN to ARENA_MAX)
-    - At least GOAL_MIN_DIST from robot start (0,0)
-    - Not inside or too close to any obstacle
-    - Spread across ALL 4 quadrants evenly
+    Pick a random goal spread evenly across all 4 quadrants.
+    Uses strict rotation so each quadrant gets equal training.
     """
-    # Force quadrant rotation to ensure even distribution
-    # This prevents the network from only learning one direction
+    global _goal_quadrant_idx
+
+    # Quadrant definitions: (xmin, xmax, ymin, ymax)
     quadrants = [
-        (0.10,  ARENA_MAX, 0.10,  ARENA_MAX),   # top-right
-        (ARENA_MIN, -0.10, 0.10,  ARENA_MAX),   # top-left
-        (ARENA_MIN, -0.10, ARENA_MIN, -0.10),   # bottom-left
-        (0.10,  ARENA_MAX, ARENA_MIN, -0.10),   # bottom-right
+        ( 0.10,  ARENA_MAX,  0.10,  ARENA_MAX),  # Q1: top-right    (+x, +y)
+        ( 0.10,  ARENA_MAX,  ARENA_MIN, -0.10),  # Q4: bottom-right (+x, -y)
+        ( ARENA_MIN, -0.10,  0.10,  ARENA_MAX),  # Q2: top-left     (-x, +y)
+        ( ARENA_MIN, -0.10,  ARENA_MIN, -0.10),  # Q3: bottom-left  (-x, -y)
     ]
 
-    for _ in range(1000):
-        # Pick a random quadrant each attempt
-        xmin, xmax, ymin, ymax = random.choice(quadrants)
+    for attempt in range(1000):
+        # Strict rotation through quadrants
+        q     = _goal_quadrant_idx % 4
+        xmin, xmax, ymin, ymax = quadrants[q]
+
         x = random.uniform(xmin, xmax)
         y = random.uniform(ymin, ymax)
 
-        # Too close to robot start?
         if math.hypot(x, y) < GOAL_MIN_DIST:
             continue
 
-        # Too close to any obstacle?
         too_close = any(
             math.hypot(x - ox, y - oy) < margin + GOAL_TOLERANCE + 0.05
             for ox, oy, margin in OBSTACLES
         )
         if too_close:
+            # Try next quadrant if this one is blocked
+            _goal_quadrant_idx += 1
             continue
 
+        _goal_quadrant_idx += 1
         return x, y
 
     return 0.65, 0.0   # safe fallback
@@ -132,12 +134,14 @@ class TD3Env(Node):
         self.odom_sub = self.create_subscription(Odometry,  "/odom", self._odom_cb, 10)
 
         # Gazebo services
-        self.reset_world_srv = self.create_client(Empty,          "/reset_world")
-        self.set_state_srv   = self.create_client(SetEntityState, "/set_entity_state")
+        self.reset_world_srv = self.create_client(Empty,        "/reset_world")
+        self.spawn_srv       = self.create_client(SpawnEntity,  "/spawn_entity")
+        self.delete_srv      = self.create_client(DeleteEntity, "/delete_entity")
 
         self.get_logger().info("Waiting for Gazebo services...")
         self.reset_world_srv.wait_for_service(timeout_sec=10.0)
-        self.set_state_srv.wait_for_service(timeout_sec=10.0)
+        self.spawn_srv.wait_for_service(timeout_sec=10.0)
+        self.delete_srv.wait_for_service(timeout_sec=10.0)
         self.get_logger().info("Gazebo services ready ✅")
 
         # Sensor state
@@ -228,20 +232,49 @@ class TD3Env(Node):
         return close_bins >= COLLISION_BINS_NEEDED
 
     def _move_goal_marker(self, x, y):
-        if not self.set_state_srv.service_is_ready():
-            return
-        req = SetEntityState.Request()
-        req.state = EntityState()
-        req.state.name = GOAL_MARKER_NAME
-        req.state.pose = Pose()
-        req.state.pose.position.x = float(x)
-        req.state.pose.position.y = float(y)
-        req.state.pose.position.z = 0.01
-        req.state.pose.orientation.w = 1.0
-        req.state.reference_frame = "world"
-        # Blocking call so marker actually moves before episode starts
-        future = self.set_state_srv.call_async(req)
-        rclpy.spin_until_future_complete(self, future, timeout_sec=2.0)
+        """Delete old marker and spawn new one at goal position."""
+        # SDF for a green cylinder (no collision — robot passes through)
+        sdf = f"""<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='goal_marker'>
+    <static>true</static>
+    <link name='link'>
+      <pose>{x} {y} 0.01 0 0 0</pose>
+      <visual name='visual'>
+        <geometry>
+          <cylinder><radius>0.20</radius><length>0.03</length></cylinder>
+        </geometry>
+        <material>
+          <ambient>0 1 0 0.8</ambient>
+          <diffuse>0 1 0 0.8</diffuse>
+          <emissive>0 0.5 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>"""
+        # Step 1: Delete existing marker (ignore errors if it doesn't exist)
+        try:
+            del_req = DeleteEntity.Request()
+            del_req.name = GOAL_MARKER_NAME
+            future = self.delete_srv.call_async(del_req)
+            rclpy.spin_until_future_complete(self, future, timeout_sec=1.0)
+        except Exception:
+            pass
+
+        time.sleep(0.1)
+
+        # Step 2: Spawn new marker at goal position
+        try:
+            spawn_req = SpawnEntity.Request()
+            spawn_req.name            = GOAL_MARKER_NAME
+            spawn_req.xml             = sdf
+            spawn_req.reference_frame = "world"
+            future = self.spawn_srv.call_async(spawn_req)
+            rclpy.spin_until_future_complete(self, future, timeout_sec=2.0)
+            self.get_logger().info(f"  ✅ Goal marker spawned at ({x:.2f}, {y:.2f})")
+        except Exception as e:
+            self.get_logger().warn(f"  ⚠ Goal marker spawn failed: {e}")
 
     def _publish_rviz_goal(self):
         msg      = String()
@@ -267,18 +300,16 @@ class TD3Env(Node):
             f"🎯 Ep {self._episode} — New goal: ({self._goal_x:.2f}, {self._goal_y:.2f})"
         )
 
-        # Reset Gazebo
+        # Reset Gazebo world (resets robot position + physics)
         future = self.reset_world_srv.call_async(Empty.Request())
         rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
-
-        # Wait for Gazebo physics to settle
         time.sleep(0.8)
         self._spin_wait(0.3)
 
-        # Move green marker in Gazebo
+        # Spawn goal marker at new position (delete old + spawn new)
         self._move_goal_marker(self._goal_x, self._goal_y)
 
-        # Publish goal to RViz multiple times to ensure it arrives
+        # Publish goal to RViz
         for _ in range(5):
             self._publish_rviz_goal()
             rclpy.spin_once(self, timeout_sec=0.05)
