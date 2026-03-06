@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>td3_training</name>
+  <version>1.0.0</version>
+  <description>TD3 training for 4-wheel skid steer robot with RPLiDAR A1</description>
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>gazebo_ros</depend>
+  <depend>gazebo_msgs</depend>
+  <depend>robot_state_publisher</depend>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+  <test_depend>ament_pep8</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
