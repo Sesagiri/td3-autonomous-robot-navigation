@@ -24,12 +24,12 @@ from td3_agent import TD3
 from actor_critic import ReplayBuffer, STATE_DIM, ACTION_DIM
 
 # ── Hyperparameters ───────────────────────────────────────────────────
-MAX_EPISODES      = 600      # increase if needed
+MAX_EPISODES      = 1500     # enough for obstacle avoidance to develop
 BATCH_SIZE        = 256
-REPLAY_START      = 1000     # random exploration before training starts
+REPLAY_START      = 500      # reduced: start learning after 500 steps not 1000
 EXPLORATION_NOISE = 0.15     # noise added to actions during training
 SAVE_EVERY        = 10       # save checkpoint every N episodes
-RESUME_TRAINING   = False    # set True to continue from checkpoint
+RESUME_TRAINING   = False    # fresh start — old data had backward driving
 MODEL_PATH        = "./models"
 LOG_FILE          = "./logs/training_log.csv"
 
