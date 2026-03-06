@@ -1,4 +1,5 @@
 from setuptools import setup
+from setuptools import setup, find_packages
 import os
 from glob import glob
 
@@ -8,6 +9,7 @@ setup(
     name=package_name,
     version='1.0.0',
     packages=[package_name],
+    packages=find_packages(),
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -18,12 +20,16 @@ setup(
             glob('worlds/*.world')),
         (os.path.join('share', package_name, 'urdf'),
             glob('urdf/*.urdf')),
+        (os.path.join('share', package_name, 'config'),
+            glob('config/*.rviz')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     entry_points={
         'console_scripts': [
             'train = td3_training.train:main',
+            'train    = td3_training.train:main',
+            'rviz_viz = td3_training.rviz_visualizer:main',
         ],
     },
 )
