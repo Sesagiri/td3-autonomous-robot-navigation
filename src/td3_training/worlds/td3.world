@@ -6,158 +6,101 @@
     <include><uri>model://sun</uri></include>
     <scene><shadows>false</shadows></scene>
 
-    <!-- Physics: fast for RL training -->
     <physics type="ode">
       <real_time_update_rate>500.0</real_time_update_rate>
       <max_step_size>0.002</max_step_size>
       <real_time_factor>1</real_time_factor>
     </physics>
 
-    <!-- 2m x 2m Arena walls (±1.0 m) -->
+    <!--
+    ARENA: 2.4m x 2.4m, walls at +-1.2m
+    Robot spawns at (0,0) = bottom-left area
+
+    TOP VIEW:
+    ┌──────────────────────────────┐  y=+1.2
+    │  ★ goals (need S-curve)  ★  │
+    │                             │
+    │  [PLATE_A──────────]  GAP   │  y=+0.40  gap RIGHT (x > +0.30)
+    │                             │
+    │  ★ goals (straight OK)  ★  │
+    │                             │
+    │  GAP    [PLATE_B──────────] │  y=-0.30  gap LEFT (x < -0.20)
+    │                             │
+    │  🤖 robot (0,0)             │  ← straight path to mid goals OK!
+    └──────────────────────────────┘  y=-1.2
+
+    Key design:
+    - PLATE_B is LOW (y=-0.30) and only blocks RIGHT side
+      → robot can go STRAIGHT LEFT or STRAIGHT FORWARD through left gap
+      → short goals in bottom-left quadrant: straight path ✅
+    - PLATE_A is MID (y=+0.40) and blocks LEFT side
+      → goals above PLATE_A require going RIGHT around it
+      → top goals: curved path required ✅
+    - Together: robot learns BOTH straight navigation AND avoidance
+    -->
+
+    <!-- Arena walls -->
     <model name="arena_walls">
       <static>true</static>
       <link name="north_wall">
-        <pose>0 1 1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
+        <pose>0 1.2 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>2.45 0.05 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.45 0.05 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
       <link name="south_wall">
-        <pose>0 -1 1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
-      </link>
-      <link name="east_wall">
-        <pose>1 0 1 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
+        <pose>0 -1.2 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>2.45 0.05 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.45 0.05 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
       <link name="west_wall">
-        <pose>-1 0 1 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
+        <pose>-1.2 0 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.05 2.45 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.05 2.45 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
-    </model>
-
-    <!-- Obstacle 1 — top-right quadrant -->
-    <model name="obstacle_1">
-      <static>true</static>
-      <link name="link">
-        <pose>0.5 0.5 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
-      </link>
-    </model>
-
-    <!-- Obstacle 2 — top-left quadrant -->
-    <model name="obstacle_2">
-      <static>true</static>
-      <link name="link">
-        <pose>-0.6 0.4 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.1 0.1 0.8 1</ambient></material></visual>
-      </link>
-    </model>
-
-    <!-- Obstacle 3 — bottom-right quadrant -->
-    <model name="obstacle_3">
-      <static>true</static>
-      <link name="link">
-        <pose>0.4 -0.6 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.8 0.8 0.1 1</ambient></material></visual>
+      <link name="east_wall">
+        <pose>1.2 0 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>0.05 2.45 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.05 2.45 0.30</size></box></geometry>
+          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
       </link>
     </model>
 
     <!--
-      GOAL MARKER — moves every episode via /set_entity_state service
-      Green circle, NO collision (robot drives through it)
-      Starts at first goal position (0.75, 0.0)
+    PLATE_A — middle-upper, blocks LEFT side
+    y=+0.40, spans x=-1.20 to x=+0.25
+    Gap on RIGHT: x=+0.25 to +1.20 (width=0.95m)
+    Centre: x=(-1.20+0.25)/2 = -0.475
+    Length: 1.45m
+    WHITE plate
     -->
-    <model name="goal_marker">
-      <static>true</static>
-      <allow_auto_disable>false</allow_auto_disable>
-      <link name="link">
-        <pose>0.75 0.0 0.01 0 0 0</pose>
-        <!-- NO collision tag — robot passes through freely -->
-        <visual name="visual">
-          <geometry>
-            <cylinder>
-              <radius>0.20</radius>
-              <length>0.02</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <ambient>0.0 1.0 0.0 0.7</ambient>
-            <diffuse>0.0 1.0 0.0 0.7</diffuse>
-            <emissive>0.0 0.5 0.0 1.0</emissive>
-          </material>
-        </visual>
-    <!-- 2m x 2m Arena walls — white like real arena -->
-    <model name="arena_walls">
-      <static>true</static>
-      <link name="north_wall">
-        <pose>0 1 0.15 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
-          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
-      </link>
-      <link name="south_wall">
-        <pose>0 -1 0.15 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
-          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
-      </link>
-      <link name="east_wall">
-        <pose>1 0 0.15 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
-          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
-      </link>
-      <link name="west_wall">
-        <pose>-1 0 0.15 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2.1 0.05 0.30</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2.1 0.05 0.30</size></box></geometry>
-          <material><ambient>0.95 0.95 0.95 1</ambient></material></visual>
-      </link>
-    </model>
-
-    <!-- Obstacle 1: Long flat plate, top-right, rotated 45deg (wood colour) -->
     <model name="obstacle_1">
       <static>true</static>
       <link name="link">
-        <pose>0.45 0.45 0.10 0 0 0.785</pose>
-        <collision name="c"><geometry><box><size>0.40 0.06 0.25</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.40 0.06 0.25</size></box></geometry>
-          <material><ambient>0.65 0.45 0.25 1</ambient><diffuse>0.65 0.45 0.25 1</diffuse></material></visual>
+        <pose>-0.475 0.40 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>1.45 0.06 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.45 0.06 0.30</size></box></geometry>
+          <material><ambient>0.93 0.93 0.93 1</ambient><diffuse>0.93 0.93 0.93 1</diffuse></material></visual>
       </link>
     </model>
 
-    <!-- Obstacle 2: Flat white plate, top-left, straight orientation -->
+    <!--
+    PLATE_B — lower, blocks RIGHT side
+    y=-0.30, spans x=-0.20 to x=+1.20
+    Gap on LEFT: x=-1.20 to -0.20 (width=1.00m) — robot at (0,0) can go straight!
+    Centre: x=(-0.20+1.20)/2 = +0.50
+    Length: 1.40m
+    BROWN/wood plate
+    -->
     <model name="obstacle_2">
       <static>true</static>
       <link name="link">
-        <pose>-0.55 0.40 0.10 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.35 0.06 0.25</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.35 0.06 0.25</size></box></geometry>
-          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse></material></visual>
-      </link>
-    </model>
-
-    <!-- Obstacle 3: Angled white plate, bottom-centre, rotated 45deg -->
-    <model name="obstacle_3">
-      <static>true</static>
-      <link name="link">
-        <pose>0.15 -0.55 0.10 0 0 0.785</pose>
-        <collision name="c"><geometry><box><size>0.30 0.05 0.25</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.30 0.05 0.25</size></box></geometry>
-          <material><ambient>0.92 0.92 0.92 1</ambient><diffuse>0.92 0.92 0.92 1</diffuse></material></visual>
+        <pose>0.50 -0.30 0.15 0 0 0</pose>
+        <collision name="c"><geometry><box><size>1.40 0.06 0.30</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.40 0.06 0.30</size></box></geometry>
+          <material><ambient>0.65 0.45 0.25 1</ambient><diffuse>0.65 0.45 0.25 1</diffuse></material></visual>
       </link>
     </model>
 
