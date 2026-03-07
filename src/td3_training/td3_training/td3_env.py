@@ -65,51 +65,56 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 import math, numpy as np, random, time
 
 # ── Arena bounds — keep goals well away from walls ─────────────────────
-# Walls are at ±1.0m. Robot body is 0.21×0.135m.
-# Keep goals at least 0.30m from walls so robot has room to stop
-ARENA_MIN = -0.70
-ARENA_MAX =  0.70
+# Arena: 2.4m x 2.4m, walls at +-1.2m
+# Robot spawns at (0,0) = bottom-left area
+# Usable area: x=[-1.0, +1.0], y=[-1.0, +1.0]
+ARENA_MIN_X = -1.00
+ARENA_MAX_X =  1.00
+ARENA_MIN_Y = -1.00
+ARENA_MAX_Y =  1.00
+ARENA_MIN   = ARENA_MIN_X
+ARENA_MAX   = ARENA_MAX_X
 
 # ── Goal ───────────────────────────────────────────────────────────────
-GOAL_TOLERANCE   = 0.20
-GOAL_MIN_DIST    = 0.40
+GOAL_TOLERANCE   = 0.15
+GOAL_MIN_DIST    = 0.35
 GOAL_MARKER_NAME = "goal_marker"
 
-# ── Obstacles (x, y, clearance_radius) ────────────────────────────────
-# Plate obstacles — longer but thinner than boxes
-# clearance = half plate length (0.20m) + robot half-width (0.07m) + margin
+# ── Obstacles ──────────────────────────────────────────────────────────
+# PLATE_A: y=+0.40, x=-1.20 to +0.25  gap on RIGHT (x > +0.25)  blocks LEFT
+# PLATE_B: y=-0.30, x=-0.20 to +1.20  gap on LEFT  (x < -0.20)  blocks RIGHT
+#
+# Path types robot must learn:
+#   Straight:  goal in bottom-left  → go straight through PLATE_B left gap
+#   1-turn:    goal in top-right    → dodge PLATE_B right, pass PLATE_A right gap
+#   S-curve:   goal in top-left     → pass PLATE_B left, pass PLATE_A left (blocked!)
+#              Actually must go RIGHT gap of PLATE_A after going left of PLATE_B
 OBSTACLES = [
-    ( 0.45,  0.45, 0.25),   # plate 1: top-right,   rotated 45°, 0.40m long
-    (-0.55,  0.40, 0.22),   # plate 2: top-left,    straight,    0.35m long
-    ( 0.15, -0.55, 0.20),   # plate 3: bottom-centre, rotated 45°, 0.30m long
+    (-0.475,  0.40, 0.40),   # PLATE_A centre + clearance
+    ( 0.500, -0.30, 0.40),   # PLATE_B centre + clearance
 ]
+PLATE_A = dict(y=0.40,  x_min=-1.20, x_max=0.25)   # gap right of x=+0.25
+PLATE_B = dict(y=-0.30, x_min=-0.20, x_max=1.20)   # gap left  of x=-0.20
 
 # ── LiDAR ─────────────────────────────────────────────────────────────
 NUM_LIDAR_BINS = 24
 MAX_LIDAR_DIST = 3.5
 
 # ── Safety ────────────────────────────────────────────────────────────
-# Collision distance analysis:
-#   Arena walls are at 1.0m from centre
-#   ARENA_MIN = -0.70, so robot can be at most 0.70m from centre
-#   Distance to wall from robot at x=-0.70: 1.0 - 0.70 = 0.30m
-#   Obstacle box half-size = 0.10m
-#   Robot half-width = 0.0675m
-#   Real contact distance ≈ 0.10 + 0.0675 = 0.168m from obstacle centre
-#   Use 0.20m threshold — catches real hits, safe from wall false alarms
-COLLISION_DIST        = 0.20   # metres
-COLLISION_BINS_NEEDED = 2      # 2 bins minimum to confirm real obstacle
+COLLISION_DIST        = 0.18
+COLLISION_BINS_NEEDED = 2
 
 # ── Episode ───────────────────────────────────────────────────────────
-MAX_STEPS = 500
+MAX_STEPS = 600
 
 # ── Reward ────────────────────────────────────────────────────────────
 R_GOAL      =  200.0
 R_COLLISION = -100.0
-R_STEP      =   -0.5
+R_STEP      =   -0.3
 R_PROGRESS  =   30.0
 
 
+<<<<<<< HEAD
 def _safe_goal():
     """
     Sample a random (x, y) inside the arena that is:
@@ -160,51 +165,52 @@ FORCED_OBSTACLE_GOALS = [
 ]
 _forced_goal_idx = 0   # cycles through forced goals
 
+=======
+_goal_zone_idx = 0
+>>>>>>> 16e6eea (modified world , training)
 
 def _safe_goal():
     """
-    Mix of:
-    - 50% forced obstacle-avoidance goals (robot MUST go around obstacle)
-    - 50% random quadrant goals (generalization)
+    Truly random goals across full arena.
+    Robot at (0,0). Usable: x=[-1,+1], y=[-1,+1]
+
+    Path types the robot will encounter:
+      STRAIGHT  (50% of goals): bottom-left area, clear line of sight from (0,0)
+                                 robot just drives forward/diagonally
+      1-TURN    (30% of goals): top-right area, must pass PLATE_A right gap
+      S-CURVE   (20% of goals): top-left area, must navigate around both plates
+
+    This mix teaches: go straight when clear, avoid when blocked.
     """
-    global _goal_quadrant_idx, _forced_goal_idx
+    global _goal_zone_idx
+    _goal_zone_idx += 1
 
-    # Every other episode use a forced obstacle goal
-    if _goal_quadrant_idx % 2 == 0:
-        goal = FORCED_OBSTACLE_GOALS[_forced_goal_idx % len(FORCED_OBSTACLE_GOALS)]
-        _forced_goal_idx     += 1
-        _goal_quadrant_idx   += 1
-        return goal
+    for _ in range(1000):
+        x = random.uniform(ARENA_MIN_X, ARENA_MAX_X)
+        y = random.uniform(ARENA_MIN_Y, ARENA_MAX_Y)
 
-    # Odd episodes: random quadrant goal
-    quadrants = [
-        ( 0.10,  ARENA_MAX,  0.10,  ARENA_MAX),  # Q1: top-right
-        ( 0.10,  ARENA_MAX,  ARENA_MIN, -0.10),  # Q4: bottom-right
-        ( ARENA_MIN, -0.10,  0.10,  ARENA_MAX),  # Q2: top-left
-        ( ARENA_MIN, -0.10,  ARENA_MIN, -0.10),  # Q3: bottom-left
-    ]
-
-    q = _goal_quadrant_idx % 4
-    _goal_quadrant_idx += 1
-
-    xmin, xmax, ymin, ymax = quadrants[q]
-
-    for _ in range(500):
-        x = random.uniform(xmin, xmax)
-        y = random.uniform(ymin, ymax)
-
+        # Must be far enough from robot spawn (0,0)
         if math.hypot(x, y) < GOAL_MIN_DIST:
             continue
 
-        too_close = any(
-            math.hypot(x - ox, y - oy) < margin + GOAL_TOLERANCE + 0.05
-            for ox, oy, margin in OBSTACLES
-        )
-        if not too_close:
-            return x, y
+        # Exclude inside PLATE_A plate body
+        if abs(y - PLATE_A['y']) < 0.12 and PLATE_A['x_min'] < x < PLATE_A['x_max']:
+            continue
 
-    fallbacks = [(0.55, 0.20), (0.55, -0.20), (-0.55, 0.20), (-0.55, -0.20)]
-    return fallbacks[q]
+        # Exclude inside PLATE_B plate body
+        if abs(y - PLATE_B['y']) < 0.12 and PLATE_B['x_min'] < x < PLATE_B['x_max']:
+            continue
+
+        return x, y
+
+    # Safe fallbacks
+    fallbacks = [
+        (-0.70, -0.70),  # straight path — bottom-left
+        ( 0.80,  0.80),  # top-right
+        (-0.70,  0.80),  # top-left (S-curve)
+        ( 0.80, -0.70),  # bottom-right
+    ]
+    return fallbacks[_goal_zone_idx % 4]
 
 
 class TD3Env(Node):
@@ -427,7 +433,7 @@ class TD3Env(Node):
       <pose>{x} {y} 0.01 0 0 0</pose>
       <visual name='visual'>
         <geometry>
-          <cylinder><radius>0.20</radius><length>0.03</length></cylinder>
+          <cylinder><radius>0.15</radius><length>0.03</length></cylinder>
         </geometry>
         <material>
           <ambient>0 1 0 0.8</ambient>
