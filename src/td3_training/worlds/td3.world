@@ -6,102 +6,12 @@
     <include><uri>model://sun</uri></include>
     <scene><shadows>false</shadows></scene>
 
-    <!-- Physics: fast for RL training -->
     <physics type="ode">
       <real_time_update_rate>500.0</real_time_update_rate>
       <max_step_size>0.002</max_step_size>
       <real_time_factor>1</real_time_factor>
     </physics>
 
-<<<<<<< HEAD
-    <!-- 2m x 2m Arena walls (±1.0 m) -->
-    <model name="arena_walls">
-      <static>true</static>
-      <link name="north_wall">
-        <pose>0 1 1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
-      </link>
-      <link name="south_wall">
-        <pose>0 -1 1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
-      </link>
-      <link name="east_wall">
-        <pose>1 0 1 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
-      </link>
-      <link name="west_wall">
-        <pose>-1 0 1 0 0 1.5708</pose>
-        <collision name="c"><geometry><box><size>2 0.05 2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>2 0.05 2</size></box></geometry>
-          <material><ambient>0.8 0.1 0.1 1</ambient></material></visual>
-      </link>
-    </model>
-
-    <!-- Obstacle 1 — top-right quadrant -->
-    <model name="obstacle_1">
-      <static>true</static>
-      <link name="link">
-        <pose>0.5 0.5 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
-      </link>
-    </model>
-
-    <!-- Obstacle 2 — top-left quadrant -->
-    <model name="obstacle_2">
-      <static>true</static>
-      <link name="link">
-        <pose>-0.6 0.4 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.1 0.1 0.8 1</ambient></material></visual>
-      </link>
-    </model>
-
-    <!-- Obstacle 3 — bottom-right quadrant -->
-    <model name="obstacle_3">
-      <static>true</static>
-      <link name="link">
-        <pose>0.4 -0.6 0.1 0 0 0</pose>
-        <collision name="c"><geometry><box><size>0.2 0.2 0.2</size></box></geometry></collision>
-        <visual name="v"><geometry><box><size>0.2 0.2 0.2</size></box></geometry>
-          <material><ambient>0.8 0.8 0.1 1</ambient></material></visual>
-      </link>
-    </model>
-
-    <!--
-      GOAL MARKER — moves every episode via /set_entity_state service
-      Green circle, NO collision (robot drives through it)
-      Starts at first goal position (0.75, 0.0)
-    -->
-    <model name="goal_marker">
-      <static>true</static>
-      <allow_auto_disable>false</allow_auto_disable>
-      <link name="link">
-        <pose>0.75 0.0 0.01 0 0 0</pose>
-        <!-- NO collision tag — robot passes through freely -->
-        <visual name="visual">
-          <geometry>
-            <cylinder>
-              <radius>0.20</radius>
-              <length>0.02</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <ambient>0.0 1.0 0.0 0.7</ambient>
-            <diffuse>0.0 1.0 0.0 0.7</diffuse>
-            <emissive>0.0 0.5 0.0 1.0</emissive>
-          </material>
-        </visual>
-    <!-- 2m x 2m Arena walls — white like real arena -->
-=======
     <!--
     ARENA: 2.4m x 2.4m, walls at +-1.2m
     Robot spawns at (0,0) = bottom-left area
@@ -130,7 +40,6 @@
     -->
 
     <!-- Arena walls -->
->>>>>>> 16e6eea (modified world , training)
     <model name="arena_walls">
       <static>true</static>
       <link name="north_wall">

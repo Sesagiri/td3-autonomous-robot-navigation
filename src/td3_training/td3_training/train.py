@@ -19,27 +19,17 @@ import rclpy
 import numpy as np
 import os
 
-from td3_env   import TD3Env
+from td3_env   import TD3Env, set_training_episode, MAX_STEPS
 from td3_agent import TD3
 from actor_critic import ReplayBuffer, STATE_DIM, ACTION_DIM
 
 # ── Hyperparameters ───────────────────────────────────────────────────
-<<<<<<< HEAD
-MAX_EPISODES      = 600      # increase if needed
+MAX_EPISODES      = 3000     # more episodes for complex maze learning
 BATCH_SIZE        = 256
-REPLAY_START      = 1000     # random exploration before training starts
-EXPLORATION_NOISE = 0.15     # noise added to actions during training
-SAVE_EVERY        = 10       # save checkpoint every N episodes
-RESUME_TRAINING   = False    # set True to continue from checkpoint
-MAX_EPISODES      = 1500     # enough for obstacle avoidance to develop
-=======
-MAX_EPISODES      = 2000     # enough for obstacle avoidance to develop
->>>>>>> 16e6eea (modified world , training)
-BATCH_SIZE        = 256
-REPLAY_START      = 500      # reduced: start learning after 500 steps not 1000
-EXPLORATION_NOISE = 0.20     # noise added to actions during training
-SAVE_EVERY        = 10       # save checkpoint every N episodes
-RESUME_TRAINING   = False     # continue from saved checkpoint
+REPLAY_START      = 1000     # larger buffer before learning starts
+EXPLORATION_NOISE = 0.25     # more exploration — maze needs it
+SAVE_EVERY        = 10
+RESUME_TRAINING   = False    # FRESH START
 MODEL_PATH        = "./models"
 LOG_FILE          = "./logs/training_log.csv"
 
@@ -58,9 +48,6 @@ def main():
         agent.load(MODEL_PATH)
         print("▶  Resumed from existing checkpoint")
 
-    # Log header
-    with open(LOG_FILE, "w") as f:
-        f.write("episode,steps,reward,result,goal_x,goal_y\n")
     # Log header — only write if starting fresh
     if not RESUME_TRAINING or not os.path.exists(LOG_FILE):
         with open(LOG_FILE, "w") as f:
@@ -77,6 +64,17 @@ def main():
     print("="*60 + "\n")
 
     for ep in range(1, MAX_EPISODES + 1):
+        # Tell curriculum which episode we're on
+        set_training_episode(ep)
+
+        # Show curriculum phase
+        if ep == 1:
+            print("\n📚 PHASE 1 (ep 1-400): EASY — straight goals only")
+        elif ep == 401:
+            print("\n📚 PHASE 2 (ep 401-800): MEDIUM — straight + 1-gap goals")
+        elif ep == 801:
+            print("\n📚 PHASE 3 (ep 801+): FULL — all goal types including S-curve")
+
         # reset() picks a NEW random goal automatically
         obs      = env.reset()
         gx, gy   = env._goal_x, env._goal_y
@@ -84,7 +82,7 @@ def main():
         ep_steps  = 0
         result    = "timeout"
 
-        for _ in range(500):
+        for _ in range(MAX_STEPS):
             total_steps += 1
             ep_steps    += 1
 
