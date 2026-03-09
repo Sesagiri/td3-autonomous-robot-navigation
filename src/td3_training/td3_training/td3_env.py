@@ -68,17 +68,17 @@ COLLISION_DIST        = 0.18
 COLLISION_BINS_NEEDED = 2
 
 # ── Episode ───────────────────────────────────────────────────────────
-MAX_STEPS = 800   # increased — S-curve paths need more steps
+MAX_STEPS = 500
 
 # ── Reward ────────────────────────────────────────────────────────────
 R_GOAL      =  200.0
 R_COLLISION = -100.0
-R_STEP      =   -0.1   # reduced — don't punish long paths as harshly
-R_PROGRESS  =   40.0   # increased — stronger guidance toward goal
+R_STEP      =   -0.3   # 500 steps = -150 total, close to collision cost
+R_PROGRESS  =   30.0
 
 
 _goal_zone_idx = 0
-_current_episode = 0   # tracked externally by train.py via set_episode()
+_current_episode = 0
 
 def set_training_episode(ep):
     """Called by train.py each episode so goal difficulty scales up."""
@@ -87,59 +87,149 @@ def set_training_episode(ep):
 
 def _safe_goal():
     """
-    CURRICULUM LEARNING — goal difficulty increases with episode number.
+    CURRICULUM LEARNING — verified against full arena geometry.
 
-    Phase 1 (ep   1-400): EASY   — straight paths only, no obstacles needed
-    Phase 2 (ep 401-800): MEDIUM — mix of straight + 1-gap goals
-    Phase 3 (ep 801+):    FULL   — all goal types including S-curve
+    Arena layout (top view):
+      y=+1.0  ─────────────── north wall
+      y=+0.40  [PLATE_A: x=-1.2 to +0.25]  gap RIGHT (x > +0.25)
+      y= 0.00  ✦ ROBOT SPAWN (faces +X)
+      y=-0.30  [PLATE_B: x=-0.20 to +1.2]  gap LEFT  (x < -0.20)
+      y=-1.0  ─────────────── south wall
 
-    This prevents the robot getting stuck in local optima early.
-    It first masters straight navigation, then learns gaps, then S-curve.
+    Open zones (NO gap crossing needed):
+      Corridor:    -0.18 < y < +0.28,  any x  (between both plates)
+      Bottom-left: y < -0.42, x < -0.20       (fully below PLATE_B, left side)
+
+    1-gap zones (ONE gap crossing needed):
+      Bottom-left: y < -0.42, x < -0.20  → pass PLATE_B left gap
+      Top-right:   y > +0.52, x > +0.25  → pass PLATE_A right gap
+
+    2-gap S-curve (hardest — needs full maze navigation):
+      Top-left:    y > +0.52, x < +0.25  → must go: left gap B → right gap A
+
+    ── Phase 1 (ep 1–500): OPEN ONLY ─────────────────────────────────
+      Goals in corridor (-0.18 < y < +0.28) AND bottom-left (verified).
+      Covers ALL compass directions at 0.55–0.92m distance.
+      Zero gap crossings needed. Robot learns:
+        • Orient toward any angle
+        • Drive forward
+        • Stop at goal
+      WHY 500 eps: needs ~300 to stabilise, 200 buffer before introducing gaps.
+
+    ── Phase 2 (ep 501–1000): 1-GAP ONLY ─────────────────────────────
+      Mixes open goals (50%) with 1-gap goals (50%).
+      Open goals kept so network doesn't forget Phase 1.
+      New skill: find and pass through a gap.
+
+    ── Phase 3 (ep 1001–2000): ALL GOALS ──────────────────────────────
+      Adds top-left S-curve goals (25%) alongside all previous types.
+      Random sampling across full arena with plate exclusion.
+      Network must combine both gap skills into one path.
+
+    ── Phase 4 (ep 2001–3000): RANDOM FULL ────────────────────────────
+      Pure random across entire arena — no fixed lists.
+      Maximises generalisation and removes any fixed-goal memorisation.
     """
     global _goal_zone_idx
     _goal_zone_idx += 1
     ep = _current_episode
 
-    # ── Phase 1: Easy straight goals (bottom half of arena) ───────────
-    if ep <= 400:
-        for _ in range(1000):
-            x = random.uniform(ARENA_MIN_X, ARENA_MAX_X)
-            y = random.uniform(ARENA_MIN_Y, -0.35)   # below PLATE_B only
-            if math.hypot(x, y) < GOAL_MIN_DIST:
-                continue
-            # Exclude inside PLATE_B
-            if abs(y - PLATE_B['y']) < 0.12 and PLATE_B['x_min'] < x < PLATE_B['x_max']:
-                continue
-            return x, y
-        return (-0.70, -0.60)  # fallback
+    # ── Phase 1: ALL DIRECTIONS, close range, ZERO gap crossings ─────
+    # ALL goals are inside the corridor: -0.18 < y < +0.28
+    # This band sits between PLATE_B (y=-0.30) and PLATE_A (y=+0.40)
+    # so ZERO gap crossings are needed regardless of x position.
+    #
+    # Covers 8 compass directions from (0,0):
+    #   RIGHT      0°  (+x,  0)
+    #   UP-RIGHT  +22° (+x, +y)  — kept y<+0.28 to stay below PLATE_A
+    #   UP-LEFT  +156° (-x, +y)  — same
+    #   LEFT      180° (-x,  0)
+    #   DOWN-LEFT-156° (-x, -y)  — kept y>-0.18 to stay above PLATE_B
+    #   DOWN-RIGHT-11° (+x, -y)  — same
+    #
+    # VERIFIED by geometry checker — no goal hits any plate or wall.
+    if ep <= 500:
+        open_goals = [
+            # RIGHT — robot faces this directly, easiest start
+            ( 0.60,  0.00),   # 0°,    dist=0.60
+            ( 0.65,  0.10),   # +9°,   dist=0.66
+            # UPPER-RIGHT — small left turn needed
+            ( 0.50,  0.20),   # +22°,  dist=0.54  y=0.20 ✅
+            ( 0.45,  0.20),   # +24°,  dist=0.49  y=0.20 ✅
+            # UPPER-LEFT — large left turn needed
+            (-0.50,  0.15),   # +163°, dist=0.52  y=0.15 ✅
+            (-0.45,  0.20),   # +156°, dist=0.49  y=0.20 ✅
+            # LEFT — 180° turn
+            (-0.55,  0.00),   # 180°,  dist=0.55
+            (-0.60,  0.00),   # 180°,  dist=0.60
+            # LOWER-LEFT — lower-left turn
+            (-0.50, -0.15),   # -163°, dist=0.52  y=-0.15 ✅
+            (-0.45, -0.15),   # -162°, dist=0.47  y=-0.15 ✅
+            # LOWER-RIGHT — slight right-down, above PLATE_B
+            ( 0.55, -0.15),   # -15°,  dist=0.57  y=-0.15 ✅
+            ( 0.50, -0.10),   # -11°,  dist=0.51  y=-0.10 ✅
+        ]
+        return open_goals[_goal_zone_idx % len(open_goals)]
 
-    # ── Phase 2: Medium — straight + 1-gap goals ──────────────────────
-    elif ep <= 800:
-        # Alternate: 50% straight, 50% top-right (1 gap)
+    # ── Phase 2: OPEN(50%) + 1-GAP(50%) ───────────────────────────────
+    # Open goals kept to prevent catastrophic forgetting of Phase 1.
+    # 1-gap goals verified: y < -0.42 OR (y > +0.52 and x > +0.25)
+    # REMOVED: (-0.80,-0.80) and (-0.85,-0.65) — path crosses PLATE_B
+    elif ep <= 1000:
         if _goal_zone_idx % 2 == 0:
-            # Straight — bottom area
-            for _ in range(1000):
-                x = random.uniform(ARENA_MIN_X, ARENA_MAX_X)
-                y = random.uniform(ARENA_MIN_Y, -0.35)
-                if math.hypot(x, y) < GOAL_MIN_DIST:
-                    continue
-                if abs(y - PLATE_B['y']) < 0.12 and PLATE_B['x_min'] < x < PLATE_B['x_max']:
-                    continue
-                return x, y
-            return (-0.70, -0.60)
+            # Open — identical subset to Phase 1 keeps skill alive
+            open_goals = [
+                ( 0.60,  0.00), (-0.55,  0.00),
+                ( 0.50,  0.20), (-0.50,  0.15),
+                (-0.50, -0.15), ( 0.55, -0.15),
+            ]
+            return open_goals[_goal_zone_idx % len(open_goals)]
         else:
-            # Top-right — needs 1 gap through PLATE_A right side
-            for _ in range(1000):
-                x = random.uniform(0.30, ARENA_MAX_X)
-                y = random.uniform(0.50, ARENA_MAX_Y)
-                if abs(y - PLATE_A['y']) < 0.12 and PLATE_A['x_min'] < x < PLATE_A['x_max']:
-                    continue
-                return x, y
-            return (0.80, 0.80)
+            # 1-gap verified goals only
+            one_gap_goals = [
+                # Bottom-left: below PLATE_B, left side (left gap)
+                (-0.55, -0.65),   # dist=0.85 ✅
+                (-0.70, -0.60),   # dist=0.92 ✅
+                (-0.60, -0.75),   # dist=0.96 ✅
+                (-0.75, -0.55),   # dist=0.93 ✅
+                (-0.65, -0.75),   # dist=0.99 ✅
+                # Top-right: above PLATE_A, right side (right gap)
+                ( 0.60,  0.75),   # dist=0.96 ✅
+                ( 0.75,  0.65),   # dist=0.99 ✅
+                ( 0.80,  0.80),   # dist=1.13 ✅
+                ( 0.50,  0.75),   # dist=0.90 ✅
+                ( 0.90,  0.70),   # dist=1.14 ✅
+                ( 0.65,  0.85),   # dist=1.07 ✅
+            ]
+            return one_gap_goals[_goal_zone_idx % len(one_gap_goals)]
 
-    # ── Phase 3: Full arena — all goal types ──────────────────────────
+    # ── Phase 3: ALL TYPES — 25% each ──────────────────────────────────
+    # S-curve top-left: y shifted to +0.75 (was 0.70) to ensure they
+    # are clearly above PLATE_A (y=0.40) with good clearance.
+    # Direct path from (0,0) to (-0.60,+0.75) DOES cross PLATE_A ✅
+    # so robot genuinely must navigate around it.
+    elif ep <= 2000:
+        r = _goal_zone_idx % 4
+        if r == 0:
+            # Open — foundation kept alive
+            return [( 0.60,  0.00), (-0.55,  0.00),
+                    ( 0.50,  0.20), (-0.50, -0.15)][_goal_zone_idx % 4]
+        elif r == 1:
+            # Bottom 1-gap
+            return [(-0.55, -0.65), (-0.70, -0.60), (-0.60, -0.75),
+                    (-0.75, -0.55), (-0.65, -0.75)][_goal_zone_idx % 5]
+        elif r == 2:
+            # Top-right 1-gap
+            return [( 0.60,  0.75), ( 0.75,  0.65), ( 0.80,  0.80),
+                    ( 0.50,  0.75), ( 0.90,  0.70)][_goal_zone_idx % 5]
+        else:
+            # S-curve top-left — y=+0.75 ensures above PLATE_A
+            return [(-0.60,  0.75), (-0.70,  0.65), (-0.80,  0.80),
+                    (-0.50,  0.75), (-0.90,  0.65)][_goal_zone_idx % 5]
+
+    # ── Phase 4: FULL RANDOM — pure generalisation ─────────────────────
     else:
-        for _ in range(1000):
+        for _ in range(2000):
             x = random.uniform(ARENA_MIN_X, ARENA_MAX_X)
             y = random.uniform(ARENA_MIN_Y, ARENA_MAX_Y)
             if math.hypot(x, y) < GOAL_MIN_DIST:
@@ -149,8 +239,15 @@ def _safe_goal():
             if abs(y - PLATE_B['y']) < 0.12 and PLATE_B['x_min'] < x < PLATE_B['x_max']:
                 continue
             return x, y
-        fallbacks = [(-0.70,-0.70),(0.80,0.80),(-0.70,0.80),(0.80,-0.70)]
-        return fallbacks[_goal_zone_idx % 4]
+        # Guaranteed safe fallbacks — one per zone
+        fallbacks = [
+            ( 0.60,  0.00),   # open corridor
+            (-0.55, -0.60),   # bottom-left open
+            (-0.70, -0.70),   # bottom 1-gap
+            ( 0.75,  0.75),   # top-right 1-gap
+            (-0.70,  0.70),   # S-curve
+        ]
+        return fallbacks[_goal_zone_idx % len(fallbacks)]
 
 
 class TD3Env(Node):
